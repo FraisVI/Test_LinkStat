@@ -66,7 +66,7 @@ class ShortLinkResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->emptyStateHeading('Ссылок пока нет')
-            ->emptyStateDescription('Создайте первую короткую ссылку.')
+            ->emptyStateDescription('Создайте первую короткую ссылку для отслеживания статистики кликов.')
             ->emptyStateIcon('heroicon-o-link')
             ->actions([
                 Tables\Actions\ViewAction::make()
@@ -74,12 +74,14 @@ class ShortLinkResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->label('Изменить'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('Удалить'),
+                    ->label('Удалить')
+                    ->modalHeading('Удалить ссылку'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->label('Удалить выбранные'),
+                        ->label('Удалить выбранные')
+                        ->modalHeading('Удалить выбранные ссылки'),
                 ]),
             ]);
     }

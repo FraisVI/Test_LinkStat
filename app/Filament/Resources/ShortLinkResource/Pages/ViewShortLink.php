@@ -21,7 +21,8 @@ class ViewShortLink extends ViewRecord
             Actions\EditAction::make()
                 ->label('Изменить'),
             Actions\DeleteAction::make()
-                ->label('Удалить'),
+                ->label('Удалить')
+                ->modalHeading('Удалить ссылку'),
         ];
     }
 }

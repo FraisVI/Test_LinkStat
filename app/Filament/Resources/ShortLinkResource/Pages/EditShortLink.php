@@ -19,7 +19,8 @@ class EditShortLink extends EditRecord
     {
         return [
             Actions\DeleteAction::make()
-                ->label('Удалить'),
+                ->label('Удалить')
+                ->modalHeading('Удалить ссылку'),
         ];
     }
 }
