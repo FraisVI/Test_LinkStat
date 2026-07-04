@@ -10,11 +10,18 @@ class ViewShortLink extends ViewRecord
 {
     protected static string $resource = ShortLinkResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Статистика ссылки';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make()
+                ->label('Изменить'),
+            Actions\DeleteAction::make()
+                ->label('Удалить'),
         ];
     }
 }

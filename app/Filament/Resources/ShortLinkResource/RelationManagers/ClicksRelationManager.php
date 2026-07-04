@@ -30,6 +30,9 @@ class ClicksRelationManager extends RelationManager
                     ->dateTime('d.m.Y H:i:s')
                     ->sortable(),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->emptyStateHeading('Переходов пока нет')
+            ->emptyStateDescription('После первого перехода по короткой ссылке здесь появится запись.')
+            ->emptyStateIcon('heroicon-o-chart-bar');
     }
 }

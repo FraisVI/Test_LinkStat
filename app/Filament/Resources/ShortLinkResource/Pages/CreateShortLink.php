@@ -9,6 +9,11 @@ class CreateShortLink extends CreateRecord
 {
     protected static string $resource = ShortLinkResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Создать ссылку';
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['user_id'] = auth()->id();

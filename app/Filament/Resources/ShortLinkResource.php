@@ -28,6 +28,8 @@ class ShortLinkResource extends Resource
 
     protected static ?string $navigationLabel = 'Ссылки';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -63,15 +65,21 @@ class ShortLinkResource extends Resource
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
+            ->emptyStateHeading('Ссылок пока нет')
+            ->emptyStateDescription('Создайте первую короткую ссылку.')
+            ->emptyStateIcon('heroicon-o-link')
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->label('Статистика'),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Изменить'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Удалить'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Удалить выбранные'),
                 ]),
             ]);
     }
