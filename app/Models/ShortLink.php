@@ -26,4 +26,9 @@ class ShortLink extends Model
     {
         return $this->hasMany(ShortLinkClick::class);
     }
+
+    public function getShortUrlAttribute(): string
+    {
+        return url($this->code);
+    }
 }

@@ -45,9 +45,11 @@ class ShortLinkResource extends Resource
                     ->label('Оригинальный URL')
                     ->limit(60)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('code')
-                    ->label('Код')
-                    ->copyable(),
+                Tables\Columns\TextColumn::make('short_url')
+                    ->label('Короткая ссылка')
+                    ->copyable()
+                    ->openUrlInNewTab()
+                    ->url(fn (ShortLink $record): string => $record->short_url),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Создана')
                     ->dateTime('d.m.Y H:i')
