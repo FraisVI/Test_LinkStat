@@ -3,9 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ShortLinkResource\Pages;
+use App\Filament\Resources\ShortLinkResource\RelationManagers;
 use App\Models\ShortLink;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -50,6 +53,10 @@ class ShortLinkResource extends Resource
                     ->copyable()
                     ->openUrlInNewTab()
                     ->url(fn (ShortLink $record): string => $record->short_url),
+                Tables\Columns\TextColumn::make('clicks_count')
+                    ->label('Клики')
+                    ->counts('clicks')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Создана')
                     ->dateTime('d.m.Y H:i')
@@ -57,6 +64,8 @@ class ShortLinkResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->label('Статистика'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -64,6 +73,23 @@ class ShortLinkResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\TextEntry::make('original_url')
+                    ->label('Оригинальный URL'),
+                Infolists\Components\TextEntry::make('short_url')
+                    ->label('Короткая ссылка')
+                    ->copyable()
+                    ->url(fn (ShortLink $record): string => $record->short_url)
+                    ->openUrlInNewTab(),
+                Infolists\Components\TextEntry::make('clicks_count')
+                    ->label('Всего кликов')
+                    ->state(fn (ShortLink $record): int => $record->clicks()->count()),
             ]);
     }
 
@@ -92,11 +118,19 @@ class ShortLinkResource extends Resource
         return $code;
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ClicksRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListShortLinks::route('/'),
             'create' => Pages\CreateShortLink::route('/create'),
+            'view' => Pages\ViewShortLink::route('/{record}'),
             'edit' => Pages\EditShortLink::route('/{record}/edit'),
         ];
     }
